@@ -1,0 +1,25 @@
+node_modules/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Local caches
+.pnpm-store/
+.vite/
+.vite-temp/
+coverage/

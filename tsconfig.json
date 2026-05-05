@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "paths": {
+      "@moqt/transport": ["./src/transport/index.ts"],
+      "@moqt/webtransport": ["./src/webtransport/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

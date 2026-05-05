@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOQT Playground — draft-16</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- ─── Connection Bar ────────────────────────────────────── -->
+  <header id="connection-bar">
+    <h1>MOQT Playground - v0.1.0b</h1>
+    <label class="ns-ops-toggle"><input type="checkbox" id="chk-show-ns-ops"  /> Show namespace operations</label>    
+    <label class="fetch-ops-toggle"><input type="checkbox" id="chk-show-fetch-ops"  /> Show fetch operations</label>  </header>
+
+  <!-- ─── Main Panels ───────────────────────────────────────── -->
+  <main id="panels">
+
+    <!-- Publisher Side -->
+    <section id="publisher-panel" class="panel">
+      <h2>Publisher</h2>
+
+      <fieldset>
+        <legend>Connection</legend>
+        <div class="field-row conn-top">
+          <label class="url-label">URL <input id="pub-relay-url" type="text" placeholder="https://localhost:4443" /></label>
+          <button id="pub-btn-connect">Connect</button>
+          <button id="pub-btn-disconnect" disabled>Disconnect</button>
+          <span id="pub-conn-status" class="status disconnected">Disconnected</span>
+        </div>
+        <div class="field-row">
+          <label>Draft
+            <select id="pub-draft-version">
+              <option value="16" selected>16</option>
+              <!--<option value="14">14</option>-->
+            </select>
+          </label>
+          <label>Max Req ID <input id="pub-max-request-id" type="number" value="100" min="1" max="65535" /></label>
+          <label>Cert Hash <input id="pub-cert-hash" type="text" placeholder="hex (optional)" /></label>
+          <span id="pub-idle-timer" class="idle-timer hidden">Idle: --</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Publish Namespace</legend>
+        <div class="field-row">
+          <input id="pub-ns" type="text" placeholder="namespace (e.g. live)" />
+          <button id="btn-pub-ns" disabled>Publish</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Published Namespaces</legend>
+        <div id="published-ns" class="list-area">
+          <em>No published namespaces</em>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Incoming Subscriptions</legend>
+        <div id="incoming-subs" class="list-area">
+          <em>No incoming subscriptions</em>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Publish</legend>
+        <div class="field-row pub-publish-row">
+          <input id="pub-publish-ns" type="text" placeholder="namespace" />
+          <input id="pub-publish-track" type="text" placeholder="track name" />
+          <label>Alias <input id="pub-publish-alias" type="number" value="0" min="0" /></label>
+          <button id="btn-publish" disabled>Publish</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Active publishers</legend>
+        <div id="track-alias-table-wrap">
+          <em class="empty-note">No active publishers yet</em>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Send Object</legend>
+        <div class="field-row send-obj-row">
+          <label>Stream ID <input id="pub-stream-id" type="number" value="0" min="0" /></label>
+          <label>Track Alias <input id="pub-track-alias" type="number" value="0" min="0" /></label>
+          <label>Group ID <input id="pub-group-id" type="number" value="0" min="0" /></label>
+          <label>Subgroup ID <input id="pub-subgroup-id" type="number" value="0" min="0" /></label>
+          <label>Object ID <input id="pub-object-id" type="number" value="0" min="0" /></label>
+        </div>
+        <div class="field-row">
+          <textarea id="pub-payload" placeholder="Payload (UTF-8 text)" rows="2"></textarea>
+        </div>
+        <div class="field-row">
+          <button id="btn-send-object-in-subgroup" disabled>Send Object in Subgroup</button>
+          <button id="btn-open-subgroup" disabled>Open Subgroup</button>
+          <button id="btn-send-object" disabled>Send Object</button>
+          <button id="btn-close-subgroup" disabled>Close Subgroup</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sent Objects</legend>
+        <div id="sent-objects-table-wrap">
+          <em class="empty-note">No objects sent yet</em>
+        </div>
+      </fieldset>
+
+      <fieldset class="fetch-ops-section">
+        <legend>Incoming Fetches</legend>
+        <div id="incoming-fetches" class="list-area">
+          <em>No incoming fetches</em>
+        </div>
+      </fieldset>
+
+    </section>
+
+
+    
+    <!-- Subscriber Side -->
+    <section id="subscriber-panel" class="panel">
+      <h2>Subscriber</h2>
+
+      <fieldset>
+        <legend>Connection</legend>
+        <div class="field-row conn-top">
+          <label class="url-label">URL <input id="sub-relay-url" type="text" placeholder="https://localhost:4443" /></label>
+          <button id="sub-btn-connect">Connect</button>
+          <button id="sub-btn-disconnect" disabled>Disconnect</button>
+          <span id="sub-conn-status" class="status disconnected">Disconnected</span>
+        </div>
+        <div class="field-row">
+          <label>Draft
+            <select id="sub-draft-version">
+              <option value="16" selected>16</option>
+              <!--<option value="14">14</option>-->
+            </select>
+          </label>
+          <label>Max Req ID <input id="sub-max-request-id" type="number" value="100" min="1" max="65535" /></label>
+          <label>Cert Hash <input id="sub-cert-hash" type="text" placeholder="hex (optional)" /></label>
+          <span id="sub-idle-timer" class="idle-timer hidden">Idle: --</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Subscribe Namespace</legend>
+        <div class="field-row">
+          <input id="sub-ns-prefix" type="text" placeholder="namespace prefix" />
+          <button id="btn-sub-ns" disabled>Subscribe NS</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Namespace Subscriptions</legend>
+        <div id="active-ns-subs" class="list-area">
+          <em>No active namespace subscriptions</em>
+        </div>
+      </fieldset>
+
+      <fieldset class="ns-ops-section">
+        <legend>Announced Namespaces</legend>
+        <div id="announced-ns" class="list-area">
+          <em>No announcements received</em>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Subscribe</legend>
+        <div class="field-row">
+          <input id="sub-ns" type="text" placeholder="namespace (e.g. live)" />
+          <input id="sub-track" type="text" placeholder="track name (e.g. catalog)" />
+        </div>
+        <div class="field-row">
+          <label>Filter
+            <select id="sub-filter">
+              <option value="">Default</option>
+              <option value="LatestObject">LatestObject</option>
+              <option value="NextGroupStart">NextGroupStart</option>
+              <option value="AbsoluteStart">AbsoluteStart</option>
+              <option value="AbsoluteRange">AbsoluteRange</option>
+            </select>
+          </label>
+          <button id="btn-subscribe" disabled>Subscribe</button>
+        </div>
+        <div id="abs-start-fields" class="field-row hidden">
+          <label>Start Group <input id="sub-start-group" type="number" value="0" min="0" /></label>
+          <label>Start Object <input id="sub-start-object" type="number" value="0" min="0" /></label>
+        </div>
+        <div id="abs-range-fields" class="field-row hidden">
+          <label>End Group <input id="sub-end-group" type="number" value="0" min="0" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Active Subscriptions</legend>
+        <div id="active-subs" class="list-area">
+          <em>No active subscriptions</em>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Received Objects</legend>
+        <div class="object-viewer-header">
+          <span class="object-viewer-count" id="sub-obj-count">0 objects</span>
+          <button id="btn-clear-sub-objects">Clear</button>
+        </div>
+        <div id="sub-objects" class="object-item-list"><em>No objects received yet</em></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Track Status</legend>
+        <div class="field-row">
+          <input id="ts-ns" type="text" placeholder="namespace" />
+          <input id="ts-track" type="text" placeholder="track name" />
+          <button id="btn-track-status" disabled>Query</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="fetch-ops-section">
+        <legend>Fetch</legend>
+        <div class="field-row">
+          <input id="fetch-ns" type="text" placeholder="namespace" />
+          <input id="fetch-track" type="text" placeholder="track name" />
+        </div>
+        <div class="field-row fetch-range-row">
+          <label>Start Group <input id="fetch-start-group" type="number" value="0" min="0" /></label>
+          <label>End Group <input id="fetch-end-group" type="number" value="1" min="0" /></label>
+          <label>Start Object <input id="fetch-start-object" type="number" value="0" min="0" /></label>
+          <label>End Object <input id="fetch-end-object" type="number" value="0" min="0" /></label>
+        </div>
+        <div class="field-row">
+          <button id="btn-fetch" disabled>Fetch</button>
+          <button id="btn-fetch-cancel" disabled>Cancel Fetch</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="fetch-ops-section">
+        <legend>Fetched Objects</legend>
+        <div class="object-viewer-header">
+          <span class="object-viewer-count" id="fetch-obj-count">0 objects</span>
+          <button id="btn-clear-fetch-objects">Clear</button>
+        </div>
+        <div id="fetch-objects" class="object-item-list"><em>No objects fetched yet</em></div>
+      </fieldset>
+
+
+
+    </section>
+  </main>
+
+  <!-- ─── Debug Log ─────────────────────────────────────────── -->
+  <footer id="log-panel">
+    <div id="log-column">
+      <div class="log-header">
+        <h2>Control Messages</h2>
+        <label class="log-chk"><input type="checkbox" id="chk-show-hex" /> Show me the hex!</label>
+        <button id="btn-clear-log">Clear</button>
+      </div>
+      <pre id="log"></pre>
+    </div>
+    <div id="viz-resize-handle"></div>
+    <aside id="connection-viz-panel">
+      <div class="viz-panel-header" id="viz-toggle">
+        <span class="viz-collapse-icon">▾</span>
+        <h2 class="viz-panel-title">Connection Visualization</h2>
+      </div>
+      <div id="connection-viz-content" class="viz-panel-body"></div>
+    </aside>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
